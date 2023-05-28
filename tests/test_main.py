@@ -9,4 +9,7 @@ from main import FaceSurveillanceCore
 core = FaceSurveillanceCore()
 
 
-core.process_single_video("trinh.mp4")
+core.process_single_video("3.mp4")
+
+
+
