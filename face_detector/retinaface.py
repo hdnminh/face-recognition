@@ -139,6 +139,7 @@ class RetinaFace(AbstractFaceDetector):
     ) -> List[np.ndarray]:
         resp = []
         for bbox in face_bboxs:
-            facial_image = image[bbox[1]: bbox[3], bbox[0]: bbox[2]]
-            resp.append(facial_image[:, :, ::-1])
+            if len(bbox) != 0:
+                facial_image = image[bbox[1]: bbox[3], bbox[0]: bbox[2]]
+                resp.append(facial_image[:, :, ::-1])
         return resp

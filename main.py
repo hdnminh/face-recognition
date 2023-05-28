@@ -41,8 +41,11 @@ class FaceSurveillanceCore:
 
             face_resp = self.face_recognizer.find(faces)
             identity_names = self.face_recognizer.get_identity_names(face_resp)
-
-            face_bboxs = np.array(face_bboxs) if len(face_bboxs) != 0 else np.empty((0, 5))
+            print(face_bboxs[0])
+            if len(face_bboxs[0]) == 0:
+                continue
+            else:
+                face_bboxs = np.array(face_bboxs) 
             trackers = self.mot_tracker.update(face_bboxs)
 
             for name, tracker in zip(identity_names, trackers):
@@ -51,10 +54,10 @@ class FaceSurveillanceCore:
                 cv2.rectangle(ori_image, (x1, y1), (x2, y2), (0,0,255), 5) #draw rectangle to main image
 
                 # import ipdb; ipdb.set_trace()
-                if not self.trackid_to_name.get(trackid) and name != "unkown":
+                if not self.trackid_to_name.get(trackid) and name != "unknown":
                     self.trackid_to_name[trackid] = name
 
-                if name == "unkown" and self.trackid_to_name.get(trackid):
+                if name == "unknown" and self.trackid_to_name.get(trackid):
                     name = self.trackid_to_name[trackid]
 
                 text = f"{name}_{trackid}"

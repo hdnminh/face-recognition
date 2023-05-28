@@ -126,8 +126,9 @@ class DeepFaceRecognizer:
         identity_names = []
         for obj in resp_obj:
             identity = obj["identity"].tolist()
+
             if len(identity) == 0:
-                identity_names.append("unkown")
+                identity_names.append("unknown")
                 continue
             identity = [item.split("/")[-2] for item in identity]
             identity = max(identity, key=identity.count)
@@ -165,12 +166,13 @@ class DeepFaceRecognizer:
             for index, instance in df.iterrows():
                 source_representation = instance["%s_representation" % (self.model_name)]
                 distance = dst.findCosineDistance(source_representation, target_representation)
+                
                 distances.append(distance)
-
+            # print(distances)
             df["%s_%s" % (self.model_name, "cosine")] = distances
-            threshold = dst.findThreshold(self.model_name, "cosine")
+            threshold = dst.findThreshold(self.model_name, "cosine") + 0.3
             df = df.drop(columns = ["%s_representation" % (self.model_name)])
-            df = df[df["%s_%s" % (self.model_name, "cosine")] <= threshold]
+            df = df[df["%s_%s" % (self.model_name, "cosine")] >= threshold]
             df = df.sort_values(by = ["%s_%s" % (self.model_name, "cosine")], ascending=True).reset_index(drop=True)
             resp_obj.append(df)
             df = df_base.copy() #restore df for the next iteration
