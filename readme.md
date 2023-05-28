@@ -1,4 +1,4 @@
-# **Face Recognition - **
+# **Face Recognition - Arcface**
 
 ## I. THÔNG TIN CHUNG
 
